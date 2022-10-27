@@ -1,4 +1,4 @@
-﻿/* TO Create Table => CREATE TABLE + Name Table */
+﻿ /* TO Create Table => CREATE TABLE + Name Table */
 
 /* (Data type)
 int
@@ -55,6 +55,10 @@ category_id int ,
 category_name varchar(50) not null,
 constraint category_pk primary key (category_id)
 );
+
+alter table categories
+alter column category_id identity(1,1)
+
 
 
 CREATE TABLE stores 
@@ -167,3 +171,61 @@ EXEC sp_rename "customers" , "CUSTOMERS"
 
 
 /*insert into*/
+
+insert into categories (category_name)
+values('test2');
+
+
+insert into customers (first_name,last_name,phone,email,city,state,zip_code,street)
+values('faris','mohmed','054576','faris54@gmail.com','alex','afdfsdd',787,'2st'),
+('test','test','524','test485@gmail.com','cairo','testt',454649,'20st');
+
+
+select * from customers
+
+update customers 
+set email = 'ali8668@gmail.com'
+where customer_id = 3
+
+select * from orders
+
+update customers
+set first_name = 'AHMED' , last_name = 'TAHA' ,  email = 'ahmedtaha89@gmail.com' , city = 'kafr'
+where customer_id = 1
+
+
+alter table customers
+alter column email varchar(30)
+
+delete from customers 
+where customer_id = 3
+
+delete  from customers 
+where customer_id = 2
+ 
+ select * from customers
+select customer_id, first_name+ ' - ' + last_name from customers
+
+
+
+ select * from customers
+ where city = 'alex' and street = '2st'
+
+ -- is / is not
+ -- in => (, , ,) بختصرهم or بدل ما اعمل اكتر من  / not in
+ -- range => (between ** and)
+  select * from customers
+  
+ where city = 'kafr' or city = 'alex' or city = 'cairo'   ;
+
+
+ 
+  select * from customers
+  where city not  in  ('kafr','alex');
+
+
+  select * from customers 
+  where customer_id not between 1 and 8 ;
+  /*
+  
+  */
