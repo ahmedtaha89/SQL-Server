@@ -22,7 +22,7 @@ date
 
 create table customers
 (
-customer_id int ,
+customer_id int identity(1,1),
 first_name varchar(20) not null ,
 last_name varchar(20) not null ,
 phone  varchar(20) unique  ,
@@ -40,7 +40,7 @@ constraint customers_pk primary key (customer_id)
 
 create table orders
 (
-orders_id int primary key ,
+orders_id int identity(1,1) primary key  ,
 orders_date date not null,
 orders_status varchar(20) not null ,
 customer_id int , 
@@ -49,7 +49,7 @@ references customers (customer_id)
 );
 
 
- CREATE TABLE category 
+ CREATE TABLE categories
 ( 
 category_id int ,
 category_name varchar(50) not null,
@@ -57,12 +57,16 @@ constraint category_pk primary key (category_id)
 );
 
 
- CREATE TABLE brand 
+CREATE TABLE stores 
 (
-brand_id int ,
-brand_name varchar(50) not null,
-constraint brand_pk primary key(brand_id)
- );
+store_id int identity(1,1) primary key,
+store_name varchar(20)not null ,
+phone varchar(20) not null,
+email varchar(30) not null,
+zip_code varchar(10) not null
+);
+
+
 
 
  CREATE TABLE staff 
@@ -70,9 +74,64 @@ constraint brand_pk primary key(brand_id)
  staff_id int ,
  first_name varchar(50) not null,
  last_name varchar(20) not null,
- salary numeric(9,5) check (salary between 2000 and 25000));
+ salary numeric(9,5) check (salary between 2000 and 25000),
+ manager_id int identity not null,
+ store_id int ,
+ constraint staff_fk foreign key(store_id)
+ references stores (store_id)
+ );
 
- 
+
+
+ CREATE TABLE order_items (
+ item_id int identity(1,1) primary key ,
+ quantity int not null,
+ list_price decimal(10,5) not null,
+ discount  decimal(10,5) not null ,
+ orders_id int identity(1,1) ,
+ constraint order_items_fk foreign key (orders_id)
+ references orders(orders_id),
+ );
+
+
+
+ CREATE TABLE products (
+ product_id int primary key,
+ product_name varchar(50) not null,
+ model_year date not null ,
+ list_price decimal(12,5) not null, 
+ category_id int ,
+ constraint products_fk foreign key (category_id)
+ references categories (category_id),
+ brand_id int ,
+ constraint brand_id_fk  foreign key (brand_id )
+ references brands (brand_id )
+ );
+
+
+
+
+  CREATE TABLE brands
+(
+brand_id int ,
+brand_name varchar(50) not null,
+constraint brand_pk primary key(brand_id)
+ );
+
+
+ CREATE TABLE stocks (
+ quantity int not null ,
+ store_id int ,
+ constraint store_id_fk  foreign key (store_id )
+ references stores (store_id ),
+ product_id int , 
+ constraint  product_id_fk  foreign key ( product_id )
+ references  products ( product_id ),
+);
+
+
+
+
 /* ALTER => تعديل */
 
 /* ALTER TABLE NAME_TABLE (ADD - ALTER - DROP)*/
@@ -98,8 +157,13 @@ constraint brand_pk primary key(brand_id)
 
 
 /*Rename Table*/
+
 /*sp_rename*/
+
 /*EXEC => EXECUTE*/
+
 GO
 EXEC sp_rename "customers" , "CUSTOMERS"
 
+
+/*insert into*/
